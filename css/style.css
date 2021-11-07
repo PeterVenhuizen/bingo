@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
+@import 'layout.css'; /* grid layout */
+@import 'nav.css'; /* nav */
+@import 'defaults.css';
+@import 'modal.css';
+
+:root {
+    /* https://digitalsynopsis.com/design/color-schemes-palettes/ - 31 */
+    --ball-b: #FFAFA5;
+    --ball-i: #F6E785;
+    --ball-n: #9FE481;
+    --ball-g: #67D0DD;
+    --ball-o: #DC95DD;
+}
+
+/* layout */
+#app > main {
+    display: grid;
+    grid-template-rows: 1fr;
+    /* grid-gap: 1em; */
+}
+.last-ball {
+    align-self: center;
+    justify-self: center;
+    display: none;
+}
+
+.drawn-balls {
+    /* display: grid; */
+    display: none;
+    /* grid-template-columns: repeat(auto-fill, 75px); */
+    grid-template-columns: repeat(5, 75px);
+    justify-content: space-between;
+    /* grid-gap: 10px; */
+}
+.drawn-balls::after {
+    content: "";
+    flex: auto;
+}
+.bouncing-balls {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(5, auto);
+    justify-content: space-evenly;
+    align-items: center;
+    /* height: 100%; */
+}
+
+@media all and (min-width: 700px) {
+    #app > main {
+        display: grid;
+        grid-template-columns: minmax(400px, 0.75fr) 1fr;
+        grid-gap: 1em;
+    }
+    .drawn-balls {
+        grid-template-columns: repeat(10, 75px);
+    }
+}
+
+/* controls */
+.start {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+.start .fa-play {
+    font-size: 10em;
+}
+.start span {
+    margin-top: 0.5em;
+    font-size: 5em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.control {
+    font-size: 2.5em;
+    cursor: pointer;
+    margin: 1em 0;
+    border: none;
+    display: none;
+}
+.next:disabled {
+    color: var(--light-gray);
+    cursor: not-allowed;
+}
+
+/* big ball */
+.ball {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.big {
+    width: 400px;
+    height: 400px;
+}
+.inner-circle {
+    background-color: white;
+    border-radius: 50%;
+    width: 65%;
+    height: 0;
+    padding: 32.5% 32.5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid transparent;
+    box-shadow: 0 0 0 8px white;
+    position: relative;
+}
+.letter {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 2px;
+    font-weight: bold;
+    font-size: 2em;
+}
+.number {
+    font-size: 10rem;
+    font-weight: bold;
+}
+
+
+/* small ball */
+.small {
+    width: 75px;
+    height: 75px;
+    /* margin: 0 5px 5px 0; */
+    margin: 5px 0;
+}
+/* invisible ball */
+.invisible {
+    background-color: transparent;
+    color: transparent;
+    width: 0;
+    height: 0;
+    margin: 0;
+}
+.small .inner-circle {
+    width: 70%;
+    height: 70%;
+    border: none;
+    box-shadow: none;
+}
+.small .number {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.bouncing-balls {
+    overflow: hidden;
+    padding: 2em 0;
+}
+.bouncing-balls .ball {
+    width: 17.5vw;
+    height: 0;
+    padding: 8.75vw 0;
+    margin-top: -200px;
+}
+.bouncing-balls .number {
+    font-size: 10vw;
+}
+
+/* set the ball colors */
+.b { background-color: var(--ball-b); }
+.i { background-color: var(--ball-i); }
+.n { background-color: var(--ball-n); }
+.g { background-color: var(--ball-g); }
+.o { background-color: var(--ball-o); }
+
+.b .inner-circle { border-color: var(--ball-b); }
+.i .inner-circle { border-color: var(--ball-i); }
+.n .inner-circle { border-color: var(--ball-n); }
+.g .inner-circle { border-color: var(--ball-g); }
+.o .inner-circle { border-color: var(--ball-o); }
+
+/* animate bouncing balls */
+.bouncing-balls > .ball {
+    animation-name: dropFromTop;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+.ball:nth-of-type(1) { animation-delay: .05s; }
+.ball:nth-of-type(2) { animation-delay: .10s; }
+.ball:nth-of-type(3) { animation-delay: .15s; }
+.ball:nth-of-type(4) { animation-delay: .20s; }
+.ball:nth-of-type(5) { animation-delay: .25s; }
+
+@keyframes dropFromTop {
+    
+    0% { margin-top: -200px; }
+    25% { margin-top: -25px; }
+    40% { margin-top: 0; }
+    65% { margin-top: -15px; }
+    80% { margin-top: 0; }
+    95% { margin-top: -7.5px; }
+    100% { margin-top: 0; }
+}
+
+/* settings */
+
+.modal p { margin: 0.5em 0; }
+.modal hr { margin: 0.5em 0; }
+
+/* toggle */
+.flex-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+}
+.toggle > span { 
+    margin-right: 0.5em; 
+}
+input:checked + .slider {
+    background-color: var(--primary-blue);
+}
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--light-gray);
+}
+
+/* range */
+.range label {
+    margin-right: 0.5em;
+    padding: 0.5em;
+    border: 1px solid var(--light-gray);
+    border-radius: 5px;
+    background-color: var(--off-white);
+}
+
